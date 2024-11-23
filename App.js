@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './pages/Home';
 import AdminView from './pages/AdminView';
 import PostDetails from './pages/PostDetails';
+import CreatePost from './pages/CreatePost';
 
 const Stack = createNativeStackNavigator();
 const MyStack = () => {
@@ -13,10 +14,11 @@ const MyStack = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Welcome'}}
+          options={{title: 'XPTO Educacão'}}
         />
         <Stack.Screen name="AdminView" component={AdminView} />
         <Stack.Screen name="PostDetails" component={PostDetails} />
+        <Stack.Screen name="CreatePost" component={CreatePost} />
       </Stack.Navigator>
     </NavigationContainer>
   );
