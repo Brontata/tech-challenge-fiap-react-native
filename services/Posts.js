@@ -1,4 +1,4 @@
-import api from '../api/api'
+import api from "../api/api"
 
 const postsService = {
     getPosts: async () => {
@@ -15,7 +15,7 @@ const postsService = {
         const response = await api.delete(`/posts/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlBST0ZFU1NPUiIsIm5hbWUiOiJHdWlsaGVybWUiLCJpYXQiOjE3MzI0MTIwMzQsImV4cCI6MTczMjQxNTYzNH0.f06UAVWBsVEuctHyLWLdUSalL-GoMBPIep7WlTF4sbY`
             }
         })
         return response.data
