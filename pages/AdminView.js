@@ -1,18 +1,22 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import AdminViewList from '../components/PostsAdminViewList';
+import postsService from '../services/Posts';
 
 const AdminView = ({navigation, route}) => {
   const [data, setData] = React.useState([]);
   const [search, setSearch] = useState('');
 
   React.useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch('https://tech-challenge-node-latest.onrender.com/posts');
-      const responseData = await response.json();
-      setData(responseData);
-    };
-    fetchPosts();
+    const loadPosts = async () => {
+      try {
+        const posts = await postsService.getPosts();
+        setData(posts);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadPosts();
   }, []);
 
   const filteredData = data.filter(item => {
@@ -27,8 +31,11 @@ const AdminView = ({navigation, route}) => {
   });
 
   return (
-    <View>
-      <Text>Painel administrativo</Text>
+    <View style={styles.container}>
+      <View style={{marginBottom: 15}}>
+        <Button title="Criar novo post" onPress={() => navigation.navigate('PostForm')} />
+      </View>
+      <Text style={styles.text}>Toque em um post visualizar com detalhes!</Text>
       <View style={styles.searchContainer}>
         <TextInput
           placeholder="Pesquisar por nome ou descrição"
@@ -37,13 +44,18 @@ const AdminView = ({navigation, route}) => {
           onChangeText={(text) => setSearch(text)}
         />
       </View>
-      {filteredData.length === 0 && <Text>Nenhum resultado encontrado</Text>}
+
+      {filteredData.length === 0 && <Text style={styles.text}>Nenhum resultado encontrado</Text>}
       <AdminViewList navigation={navigation} route={route} filteredData={filteredData} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 15,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -68,6 +80,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  text: {
+    fontSize: 16
   },
 });
 
