@@ -1,9 +1,11 @@
 import api from "../api/api"
 
 const postsService = {
+    
     getPosts: async () => {
         try {
             const response = await api.get('/posts');
+            console.log('response getPosts = ', response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching posts:', error);

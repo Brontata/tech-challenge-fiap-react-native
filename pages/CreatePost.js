@@ -1,31 +1,55 @@
-import { Text, TextInput, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, TextInput, View, StyleSheet, Button } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from "react-native-paper";
 import postsService from "../services/Posts";
-
+import { useNavigation } from '@react-navigation/native';
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 const CreatePost = () => {
     console.log("Create Post COMECOU");
-    async function createNewPost() {
-        try {
-        alert("Post criado com sucesso!");
-        const postData = {
-            title: "teste",
-            author: "teste",
-            description: "teste"
-        }
-        const post2 = await postsService.createPost(postData);
-        console.log('POST RESULT = ', post2);
-    } catch (error) {
-        console.error('Error creating post:', error);
-    }
-}
+    const navigation = useNavigation();
 
-    const mokedPost = {
-        title: "teste",
-        author: "teste",
-        description: "teste"
+    //const [description, setDescription] = useState('');
+
+    const validationSchema = Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().required('Description is required'),
+    });
+
+
+
+    async function createNewPost(title, description) {
+        try {
+            //alert("Post criado com sucesso!");
+            console.log('title', title);
+            console.log('description', description);
+
+            const postData = {
+                title: title,
+                description: description,
+                author: 'John Doe'
+            }
+
+            console.log('postData', postData);
+
+
+
+            const newPost = await postsService.createPost(postData);
+            console.log('newPost', newPost);
+
+            if (newPost.id !== undefined) {
+                alert("Post criado com sucesso!");
+                navigation.navigate('Home');
+            }else{
+                alert("Erro ao criar post!");
+            }
+
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
     }
+
 
     return (
         <>
@@ -33,26 +57,41 @@ const CreatePost = () => {
                 style={styles.container}
                 colors={['#87CEEB', '#FFFFFF']}
             >
-                <Text>Page Create Post</Text>
-                <View style={styles.content}>
-                    <Text style={styles.label}>Título</Text>
-                    <TextInput style={styles.input}></TextInput>
+                <Formik
+                    initialValues={{ title: '', description: '' }}
+                    validationSchema={validationSchema}
+                    onSubmit={(values) => {
+                         createNewPost(values.title, values.description);
+                    }}
+                >
+                    {({ handleChange, handleBlur, handleSubmit, values }) => (
+                        <View style={styles.content}>
+                            <Text style={styles.label}>Título</Text>
+                            <TextInput 
+                                style={styles.input} 
+                                onChangeText={handleChange('title')} 
+                                onBlur={handleBlur('title')}
+                                value={values.title}
+                            ></TextInput>
 
-                    <Text style={styles.label}>Texto</Text>
-                    <TextInput 
-                        multiline
-                        numberOfLines={5}
-                        placeholder="Enter your text here..."
-                        style={{ height: 100, borderColor: 'gray', borderWidth: 1, borderRadius: 25, padding: 10, width: '80%' }}
-                    />
+                            <Text style={styles.label}>Texto</Text>
+                            <TextInput
+                                multiline
+                                numberOfLines={5}
+                                placeholder="Enter your text here..."
+                                style={{ height: 150, borderColor: 'gray', borderWidth: 1, borderRadius: 25, padding: 10, width: '80%' }}
+                                onChangeText={handleChange('description')}
+                                onBlur={handleBlur('description')}
+                                value={values.description}
+                            />
 
-                    <Button style={styles.button} onPress={() => createNewPost(mokedPost)}>
-                        <Text style={styles.label}>
-                            Salvar
-                        </Text>
-                    </Button>
+                            <Button title="Salvar" style={styles.button} onPress={handleSubmit}>
+                                    
+                            </Button>
 
-                </View>
+                        </View>
+                    )}
+                </Formik>
             </LinearGradient>
         </>
     )
@@ -67,8 +106,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-      },
+        //justifyContent: 'center',
+        marginTop: 20
+    },
 
     label: {
         fontSize: 18,
@@ -87,12 +127,11 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 32,
-        backgroundColor: 'inherit',
+        backgroundColor: '#87CEEB',
         borderColor: 'grey',
         borderWidth: 1,
         width: '40%',
         alignItems: 'center',
-        padding: 5,
         fontSize: 50,
         fontWeight: 'bold',
     }
