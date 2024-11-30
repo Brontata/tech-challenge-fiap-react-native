@@ -1,11 +1,13 @@
+import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
 import { formatDate } from '../utils/dateTimeUtils';
 import { limitString } from '../utils/stringUtils';
 import postsService from '../services/Posts';
 
-
 const AdminViewList = ({ navigation, route, filteredData }) => {
+    
+    
     const handlePress = (post) => {
         navigation.navigate('PostDetails', { post });
     };
@@ -16,9 +18,10 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
     }
 
     const handleEdit = (post) => {
-        // Implement edit functionality here
-        navigation.navigate('PostForm', { post });
+        navigation.navigate('EditPost', { post });
     };
+
+   
 
     return (
         <FlatList
@@ -36,7 +39,7 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
                         <Text style={styles.author}>Autor: {item.author}</Text>
                     </View>
                     <View style={styles.row}>
-                      <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: '#2593ef'}} onPress={handleEdit}>Editar</Button>
+                      <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: '#2593ef'}} onPress={() => handleEdit(item)}>Editar</Button>
                       <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: 'red'}} onPress={handleDelete}>Excluir</Button>
                     </View>
                 </TouchableOpacity>

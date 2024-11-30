@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import postsService from '../services/Posts';
 import Post from '../components/Post';
@@ -21,11 +21,11 @@ const ListPosts = () => {
         }
     }, [isFocused]);
     return (
-        <View>
-            {posts.map((post) => (
-                <Post key={post.id} post={post} />
-            ))}
-        </View>
+        <FlatList
+            data={posts}
+            renderItem={({ item }) => <Post post={item} />}
+        >
+        </FlatList>
     )
 }
 
