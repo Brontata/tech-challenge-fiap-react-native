@@ -44,7 +44,7 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
             {admin && (
                 <View style={styles.buttonContainer}>
                     <Button mode="contained" style={styles.editButton} onPress={handleUpdate}>Editar</Button>
-                    <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: 'red'}} onPress={() => handleDelete(post.id)}>Excluir</Button>
+                    <Button mode="contained" style={styles.deleteButton} onPress={() => handleDelete(post.id)}>Excluir</Button>
                 </View>
             )}
         </View>
