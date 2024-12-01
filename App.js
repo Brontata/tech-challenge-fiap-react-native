@@ -13,6 +13,7 @@ import LoginScreen from './pages/Login';
 import RegisterScreen from './pages/RegisterScreen';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './Hooks/useAuth';
+import EditPost from './pages/EditPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,6 +51,74 @@ const TabsNavigator = () => {
             ),
         }}
       />
+// BottomTabNavigator para as telas principais
+const TabsNavigator = () => (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) =>
+            focused ? (
+              <Ionicons name="home" size={size} color={color} />
+            ) : (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name="Admin"
+        component={AdminView}
+        options={{
+          tabBarIcon: ({ focused, color, size }) =>
+            focused ? (
+              <Ionicons name="person" size={size} color={color} />
+            ) : (
+              <Ionicons name="person-outline" size={size} color={color} />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name="CreatePost"
+        component={CreatePost}
+        options={{
+          tabBarIcon: ({ focused, color, size }) =>
+            focused ? (
+              <Ionicons name="create" size={size} color={color} />
+            ) : (
+              <Ionicons name="create-outline" size={size} color={color} />
+            ),
+        }}
+      />
+    </Tab.Navigator>
+);
+
+// StackNavigator para incluir telas extras
+const MyStack = () => (
+  <NavigationContainer>
+      <Stack.Navigator>
+        {/* Tela principal que contém o TabNavigator */}
+        
+        <Stack.Screen
+          name="MainTabs"
+          component={TabsNavigator}
+          options={{ headerShown: false }}
+        />
+        {/* Tela de detalhes do post, fora do TabNavigator */}
+        <Stack.Screen
+          name="PostDetails"
+          component={PostDetails}
+          options={{ title: 'Detalhes do Post' }}
+        />
+        <Stack.Screen
+          name="EditPost"
+          component={EditPost}
+          options={{ title: 'Editar Post' }}
+        />
+      </Stack.Navigator>
+
+  </NavigationContainer>
+);
 
       {isLogged && role === "PROFESSOR" && (
         <Tab.Screen
