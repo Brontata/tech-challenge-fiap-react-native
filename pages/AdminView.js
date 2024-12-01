@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import AdminViewList from '../components/PostsAdminViewList';
 import postsService from '../services/Posts';
 
 const AdminView = ({navigation, route}) => {
   const [data, setData] = React.useState([]);
   const [search, setSearch] = useState('');
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     const loadPosts = async () => {
@@ -17,7 +19,12 @@ const AdminView = ({navigation, route}) => {
       }
     }
     loadPosts();
-  }, []);
+
+    if (isFocused) {
+      loadPosts();
+  }
+
+  }, [isFocused]);
 
   const filteredData = data.filter(item => {
     const title = item.title.toLowerCase();
@@ -33,7 +40,7 @@ const AdminView = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View style={{marginBottom: 15}}>
-        <Button title="Criar novo post" onPress={() => navigation.navigate('PostForm')} />
+        <Button title="Criar novo post" onPress={() => navigation.navigate('CreatePost')} />
       </View>
       <Text style={styles.text}>Toque em um post visualizar com detalhes!</Text>
       <View style={styles.searchContainer}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { useAuth } from "../Hooks/useAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUserNameFromToken } from "../utils/tokenUtils";
 
 const Header = () => {
   const { isLogged, logout } = useAuth();
@@ -10,10 +11,7 @@ const Header = () => {
   useEffect(() => {
     const fetchUserName = async () => {
       try {
-        const name = await AsyncStorage.getItem('name');
-        if (name) {
-          setUserName(name); 
-        }
+        setUserName(getUserNameFromToken(await AsyncStorage.getItem("token")));
       } catch (error) {
         console.error("Erro ao recuperar nome:", error);
       }

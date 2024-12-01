@@ -1,14 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { formatDate } from '../utils/dateTimeUtils';
 import postsService from '../services/Posts';
 
 
 const PostDetailsView = ({ navigation, route, post, admin }) => {
-    const handleDelete = async () => {
-        await postsService.deletePost(post.id);
-        navigation.navigate('AdminView');
+    const handleDelete = async (id) => {
+        Alert.alert(
+            'Remover post',
+            'Tem certeza que deseja remover este post?',
+            [
+                { text: 'Cancelar', onPress: () => console.log('Cancelado'), style: 'cancel' },
+                { text: 'Sim', onPress: async () => {
+                    try {
+                        await postsService.deletePost(id);
+                        Alert.alert(
+                            'Sucesso',
+                            'Post removido com sucesso.',
+                            [
+                                { text: 'Ok', onPress: () => navigation.goBack() }
+                            ]
+                        )
+                    } catch (error) {
+                        console.error('Erro ao remover post:', error);
+                    }
+                }}
+            ]
+        );
     }
 
     const handleUpdate = async () => {
@@ -25,7 +44,7 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
             {admin && (
                 <View style={styles.buttonContainer}>
                     <Button mode="contained" style={styles.editButton} onPress={handleUpdate}>Editar</Button>
-                    <Button mode="contained" style={styles.deleteButton} onPress={handleDelete(post.id)}>Excluir</Button>
+                    <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: 'red'}} onPress={() => handleDelete(post.id)}>Excluir</Button>
                 </View>
             )}
         </View>
