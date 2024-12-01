@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, ScrollView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { formatDate } from '../utils/dateTimeUtils';
 import postsService from '../services/Posts';
@@ -35,7 +35,7 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.updated_at}>Atualizado em: {formatDate(post.updated_at)}</Text>
             <Text style={styles.title}>{post.title}</Text>
             <Text style={styles.author}>Autor: {post.author}</Text>
@@ -47,7 +47,7 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
                     <Button mode="contained" style={styles.deleteButton} onPress={() => handleDelete(post.id)}>Excluir</Button>
                 </View>
             )}
-        </View>
+        </ScrollView>
     );
 };
 
@@ -84,12 +84,14 @@ const styles = StyleSheet.create({
     editButton: {
         flex: 1,
         marginRight: 10,
-        backgroundColor: '#2593ef'
+        backgroundColor: '#2593ef',
+        marginBottom: 30
     },
     deleteButton: {
         flex: 1,
         marginRight: 10,
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        marginBottom: 30
     }
 });
 
