@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { formatDate } from '../utils/dateTimeUtils';
 import { limitString } from '../utils/stringUtils';
@@ -12,9 +12,60 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
         navigation.navigate('PostDetails', { post });
     };
 
-    const handleDelete = async () => {
-      await postsService.deletePost(post.id);
-      filteredData.splice(filteredData.indexOf(post.id), 1);
+    const [deleting, setDeleting] = React.useState(false);
+
+    const handleDelete = async (post) => {
+        if (deleting) {
+            return;
+        }
+        setDeleting(true);
+        Alert.alert(
+            "Exclusão de post",
+            `Tem certeza que deseja excluir o post "${post.title}"?`,
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel",
+                    onPress: () => console.log("Cancel pressed"),
+                },
+                {
+                    text: "Excluir",
+                    onPress: async () => {
+                        try {
+                            console.log(post.id)
+                            await postsService.deletePost(post.id);
+                            const index = filteredData.findIndex(item => item.id === post.id);
+                            if (index !== -1) {
+                                filteredData.splice(index, 1);
+                            }
+                            Alert.alert(
+                                "Sucesso",
+                                "O post foi excluído com sucesso.",
+                                [
+                                    {
+                                        text: "OK",
+                                        onPress: () => console.log("OK pressed"),
+                                    },
+                                ],
+                            );
+                        } catch (error) {
+                            console.error('Error deleting post:', error);
+                            Alert.alert(
+                                "Erro",
+                                "Erro ao excluir o post.",
+                                [
+                                    {
+                                        text: "OK",
+                                    },
+                                ],
+                            );
+                        } finally {
+                            setDeleting(false);
+                        }
+                    },
+                },
+            ],
+        );
     }
 
     const handleEdit = (post) => {
@@ -40,7 +91,7 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
                     </View>
                     <View style={styles.row}>
                       <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: '#2593ef'}} onPress={() => handleEdit(item)}>Editar</Button>
-                      <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: 'red'}} onPress={handleDelete}>Excluir</Button>
+                      <Button mode="contained" style={{flex: 1, marginRight: 10, backgroundColor: 'red'}} onPress={() => handleDelete(item)}>Excluir</Button>
                     </View>
                 </TouchableOpacity>
             )}
@@ -88,4 +139,5 @@ const styles = StyleSheet.create({
 });
 
 export default AdminViewList;
+
 
