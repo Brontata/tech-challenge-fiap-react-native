@@ -1,34 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import api from '../api/api';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import usersService from '../services/Users';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
+  const route = useRoute(); // Para acessar os parâmetros da rota
 
+  // Inicializa os estados
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('ALUNO'); 
+  const [role, setRole] = useState('ALUNO');
   const [errors, setErrors] = useState({ name: '', email: '', password: '' });
+
+  // Determina se estamos no modo de edição ou cadastro
+  const isEditing = !!route.params?.user;
+
+  useEffect(() => {
+    if (isEditing) {
+      const { name, email, role } = route.params.user;
+      console.log('teste',route.params.user);
+      setName(name);
+      setEmail(email);
+      setRole(role);
+    }
+  }, [route.params]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleRegister = async () => {
+  const handleRegisterOrUpdate = async () => {
     setErrors({ name: '', email: '', password: '' });
 
     let isValid = true;
     const newErrors = {};
 
-    if (!name.trim()) {
+    if (!name?.trim()) {
       newErrors.name = 'O campo Nome é obrigatório.';
       isValid = false;
     }
 
-    if (!email.trim()) {
+    if (!email?.trim()) {
       newErrors.email = 'O campo Email é obrigatório.';
       isValid = false;
     } else if (!validateEmail(email)) {
@@ -47,25 +63,34 @@ export default function RegisterScreen() {
       return; 
     }
 
-    const body = { name, email, password, role };
+    const body = { name, email, role, password };
 
     try {
-      const response = await api.post('/users/register', body);
-      if (response.status === 201) {
-        Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-        navigation.goBack();
+      if (isEditing) {
+        // Editar usuário
+        const response = await usersService.updateUser(route.params.user.id, body);
+  
+        if (response.status === 200) {
+          Alert.alert('Sucesso', 'Usuário editado com sucesso!');
+          navigation.goBack();
+        }
       } else {
-        throw new Error('Erro ao cadastrar usuário');
+        // Cadastrar usuário
+        const response = await api.post('/users/register', body);
+        if (response.status === 201) {
+          Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+          navigation.goBack();
+        }
       }
     } catch (error) {
-      console.error('Erro ao cadastrar:', error);
-      Alert.alert('Erro', 'Ocorreu um erro ao cadastrar. Tente novamente.');
+      console.error('Erro:', error);
+      Alert.alert('Erro', 'Ocorreu um erro. Tente novamente.');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      <Text style={styles.title}>{isEditing ? 'Edição' : 'Cadastro'}</Text>
 
       <TextInput
         style={[styles.input, errors.name && styles.inputError]}
@@ -85,14 +110,16 @@ export default function RegisterScreen() {
       />
       {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
-      <TextInput
-        style={[styles.input, errors.password && styles.inputError]}
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          style={[styles.input, errors.password && styles.inputError]}
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+     
       {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+
       <View style={styles.radioContainer}>
         <TouchableOpacity
           style={[styles.radioButton, role === 'ALUNO' && styles.radioSelected]}
@@ -108,7 +135,7 @@ export default function RegisterScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonWrapper}>
-        <Button title="Cadastrar" onPress={handleRegister} />
+        <Button title={isEditing ? 'Salvar Alterações' : 'Cadastrar'} onPress={handleRegisterOrUpdate} />
       </View>
       <Button title="Voltar" onPress={() => navigation.goBack()} color="gray" />
     </View>

@@ -14,6 +14,7 @@ import RegisterScreen from './pages/RegisterScreen';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './Hooks/useAuth';
 import EditPost from './pages/EditPost';
+import UserView from './pages/UserScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -71,6 +72,21 @@ const TabsNavigator = () => {
         <Tab.Screen
           name="CreatePost"
           component={CreatePost}
+          options={{
+            tabBarIcon: ({ focused, color, size }) =>
+              focused ? (
+                <Ionicons name="create" size={size} color={color} />
+              ) : (
+                <Ionicons name="create-outline" size={size} color={color} />
+              ),
+          }}
+        />
+      )}
+
+{isLogged && role === "PROFESSOR" && (
+        <Tab.Screen
+          name="Usuários"
+          component={UserView}
           options={{
             tabBarIcon: ({ focused, color, size }) =>
               focused ? (
