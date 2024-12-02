@@ -48,8 +48,8 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
         );
     }
 
-    const handleUpdate = async () => {
-        await postsService.updatePost(post.id);
+    const handleEdit = async () => {
+        navigation.navigate('EditPost', { post });
     }
 
     return (
@@ -61,7 +61,7 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
             <Text style={styles.content}>{post.description}</Text>
             {admin && (
                 <View style={styles.buttonContainer}>
-                    <Button mode="contained" style={styles.editButton} onPress={handleUpdate}>Editar</Button>
+                    <Button mode="contained" style={styles.editButton} onPress={() => handleEdit(post)}>Editar</Button>
                     <Button mode="contained" style={styles.deleteButton} onPress={() => handleDelete(post.id)}>Excluir</Button>
                 </View>
             )}
