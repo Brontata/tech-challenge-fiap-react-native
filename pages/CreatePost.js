@@ -5,12 +5,12 @@ import postsService from "../services/Posts";
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { getUserNameFromToken } from "../utils/tokenUtils";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const CreatePost = () => {
-    console.log("Create Post COMECOU");
     const navigation = useNavigation();
-
-    //const [description, setDescription] = useState('');
 
     const validationSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
@@ -18,33 +18,22 @@ const CreatePost = () => {
     });
 
 
-
     async function createNewPost(title, description) {
         try {
-            //alert("Post criado com sucesso!");
-            console.log('title', title);
-            console.log('description', description);
+            const token = await AsyncStorage.getItem('token');
 
             const postData = {
                 title: title,
                 description: description,
-                author: 'John Doe'
+                author: getUserNameFromToken(token)
             }
-
-            console.log('postData', postData);
-
-
-
             const newPost = await postsService.createPost(postData);
-            console.log('newPost', newPost);
-
             if (newPost.id !== undefined) {
                 alert("Post criado com sucesso!");
                 navigation.navigate('Home');
             }else{
                 alert("Erro ao criar post!");
             }
-
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -106,7 +95,6 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         alignItems: 'center',
-        //justifyContent: 'center',
         marginTop: 20
     },
 
