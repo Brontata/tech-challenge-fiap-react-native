@@ -8,18 +8,18 @@ const UserView = ({navigation, route}) => {
   const [users, setData] = React.useState([]);
   const isFocused = useIsFocused();
   const [role, setRole] = useState('PROFESSOR');
-  const [search, setSearch] = useState(''); 
+  const [search, setSearch] = useState('');
+  
+  const loadPosts = async () => {
+    try {
+      const users = await usersService.getUsers();
+      setData(users);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   React.useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const users = await usersService.getUsers();
-        setData(users);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadPosts();
 
     if (isFocused) {
       loadPosts();
@@ -65,7 +65,7 @@ const UserView = ({navigation, route}) => {
       </View>
 
       {filteredData.length === 0 && <Text style={styles.text}>Nenhum resultado encontrado</Text>}
-      <AdminViewListUsers navigation={navigation} route={route} filteredData={filteredData} />
+      <AdminViewListUsers navigation={navigation} route={route} filteredData={filteredData} onDelete={loadPosts} />
     </View>
   );
 };

@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import { limitString } from '../utils/stringUtils';
 import usersService from '../services/Users';
 
-const AdminViewListUsers = ({ navigation, route, filteredData }) => {
+const AdminViewListUsers = ({ navigation, route, filteredData, onDelete  }) => {
 
     const [deleting, setDeleting] = React.useState(false);
 
@@ -27,6 +27,9 @@ const AdminViewListUsers = ({ navigation, route, filteredData }) => {
                         setDeleting(true);
                         try {
                             await usersService.deleteUser(user.id);
+                            if (onDelete) {
+                                onDelete();
+                            }
                             const index = filteredData.findIndex(item => item.id === user.id);
                             if (index !== -1) {
                                 filteredData.splice(index, 1);
