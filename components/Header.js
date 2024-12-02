@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, SafeAreaView } from "react-native";
 import { useAuth } from "../Hooks/useAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserNameFromToken } from "../utils/tokenUtils";
@@ -25,19 +25,24 @@ const Header = () => {
   };
 
   return (
-    <View style={styles.header}>
-      <Text style={styles.title}>XPTO</Text>
-      {isLogged && (
-        <View style={styles.userInfo}>
-          <Text style={styles.username}>Olá, {userName}!</Text>
-          <Button title="Sair" onPress={handleLogout} color="#FF3B30" />
-        </View>
-      )}
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <Text style={styles.title}>XPTO</Text>
+        {isLogged && (
+          <View style={styles.userInfo}>
+            <Text style={styles.username}>Olá, {userName}!</Text>
+            <Button title="Sair" onPress={handleLogout} color="#FF3B30" />
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    marginTop: 30,
+  },
   header: {
     height: 60,
     backgroundColor: "#6200ee",
@@ -63,3 +68,4 @@ const styles = StyleSheet.create({
 });
 
 export default Header;
+
