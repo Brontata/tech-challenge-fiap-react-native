@@ -6,13 +6,20 @@ import postsService from '../services/Posts';
 
 
 const PostDetailsView = ({ navigation, route, post, admin }) => {
+    const [deleting, setDeleting] = React.useState(false);
     const handleDelete = async (id) => {
+        
+        if (deleting) {
+            return;
+        } 
+
         Alert.alert(
             'Remover post',
             'Tem certeza que deseja remover este post?',
             [
                 { text: 'Cancelar', onPress: () => console.log('Cancelado'), style: 'cancel' },
                 { text: 'Sim', onPress: async () => {
+                    setDeleting(true);
                     try {
                         await postsService.deletePost(id);
                         Alert.alert(
@@ -23,7 +30,18 @@ const PostDetailsView = ({ navigation, route, post, admin }) => {
                             ]
                         )
                     } catch (error) {
-                        console.error('Erro ao remover post:', error);
+                        console.error('Error deleting user:', error);
+                        Alert.alert(
+                            "Erro",
+                            "Erro ao excluir o usuário.",
+                            [
+                                {
+                                    text: "OK",
+                                },
+                            ],
+                        );
+                    } finally {
+                        setDeleting(false);
                     }
                 }}
             ]

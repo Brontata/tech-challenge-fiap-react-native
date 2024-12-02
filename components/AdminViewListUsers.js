@@ -11,8 +11,7 @@ const AdminViewListUsers = ({ navigation, route, filteredData }) => {
     const handleDelete = async (user) => {
         if (deleting) {
             return;
-        }
-        setDeleting(true);
+        } 
         Alert.alert(
             "Exclusão de usuário",
             `Tem certeza que deseja excluir o usuário "${user.name}"?`,
@@ -25,6 +24,7 @@ const AdminViewListUsers = ({ navigation, route, filteredData }) => {
                 {
                     text: "Excluir",
                     onPress: async () => {
+                        setDeleting(true);
                         try {
                             await usersService.deleteUser(user.id);
                             const index = filteredData.findIndex(item => item.id === user.id);
@@ -59,7 +59,7 @@ const AdminViewListUsers = ({ navigation, route, filteredData }) => {
                 },
             ],
         );
-    }
+    };
 
     const handleEdit = (user) => {
         navigation.navigate('Register', { user });

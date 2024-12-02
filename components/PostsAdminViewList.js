@@ -18,7 +18,7 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
         if (deleting) {
             return;
         }
-        setDeleting(true);
+        
         Alert.alert(
             "Exclusão de post",
             `Tem certeza que deseja excluir o post "${post.title}"?`,
@@ -31,6 +31,7 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
                 {
                     text: "Excluir",
                     onPress: async () => {
+                        setDeleting(true);
                         try {
                             console.log(post.id)
                             await postsService.deletePost(post.id);
@@ -66,13 +67,11 @@ const AdminViewList = ({ navigation, route, filteredData }) => {
                 },
             ],
         );
-    }
+    };
 
     const handleEdit = (post) => {
         navigation.navigate('EditPost', { post });
     };
-
-   
 
     return (
         <FlatList
