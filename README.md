@@ -21,7 +21,7 @@
 
 2. **Clonando o repositório**:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone https://github.com/Brontata/tech-challenge-fiap-react-native.git
    cd tech-challenge-mobile
 
 3. **Instalando dependências**:
@@ -40,7 +40,7 @@ A aplicação segue a estrutura modular para facilitar o desenvolvimento e a man
 
  - App.js: Ponto de entrada da aplicação, define as rotas principais.
  - Diretórios principais:
-    - api: Funções relacionadas ao consumo de APIs externas.
+    - api: Funções relacionadas ao consumo de APIs externas e chamadas aos endpoints REST.
     - components: Componentes reutilizáveis para a interface do usuário.
     - pages: Telas principais da aplicação.
     - services: Camada de serviços para lógica de negócios e integração com APIs.
@@ -67,6 +67,14 @@ ___
 
     - A interface utiliza React Native Paper para estilização e componentes pré-construídos.
 
+---
+## Principais Funcionalidades
+   - Autenticação via email do usuário e senha
+   - Visualização de posts
+   - Criação e edição de Posts (necessário autenticação)
+   - Criação e edição de usuários por Professores
+   - Listagem de Usuários com filtro professor ou aluno
+   - Página Administrativa permitindo visualização, edição e exclusão de Posts
 ---
 
 ## Dependências
