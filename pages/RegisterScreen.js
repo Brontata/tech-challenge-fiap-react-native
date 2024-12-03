@@ -52,7 +52,7 @@ export default function RegisterScreen() {
       isValid = false;
     }
 
-    if (!password.trim()) {
+    if (!isEditing && !password.trim()) {
       newErrors.password = 'O campo Senha é obrigatório.';
       isValid = false;
     }
