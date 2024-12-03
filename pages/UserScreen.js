@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import React, { useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import usersService from '../services/Users';
 import AdminViewListUsers from '../components/AdminViewListUsers';
+
 
 const UserView = ({navigation, route}) => {
   const [users, setData] = React.useState([]);
@@ -39,8 +40,16 @@ const UserView = ({navigation, route}) => {
     );
   });
 
+  const createUser = async () => {
+    console.log('Create User')
+    navigation.navigate('CreateUser', { item });
+  }
+
   return (
     <View style={styles.container}>
+        <Button onPress={() => navigation.navigate('CreateUser')} style={styles.radioButton} title='Criar Novo Usuário'></Button>
+
+
         <View style={styles.searchContainer}>
         <TextInput
           placeholder="Pesquisar por nome"

@@ -15,6 +15,7 @@ import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './Hooks/useAuth';
 import EditPost from './pages/EditPost';
 import UserView from './pages/UserScreen';
+import CreateUserScreen from './pages/CreateUserScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -83,7 +84,7 @@ const TabsNavigator = () => {
         />
       )}
 
-{isLogged && role === "PROFESSOR" && (
+      {isLogged && role === "PROFESSOR" && (
         <Tab.Screen
           name="Usuários"
           component={UserView}
@@ -121,6 +122,12 @@ const MyStack = () => {
           component={EditPost}
           options={{ title: 'Editar Post' }}
         />
+        <Stack.Screen
+          name="CreateUser"
+          component={CreateUserScreen}
+        />
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );
