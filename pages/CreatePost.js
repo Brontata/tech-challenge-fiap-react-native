@@ -17,11 +17,9 @@ const CreatePost = () => {
         description: Yup.string().required('Description is required'),
     });
 
-
     async function createNewPost(title, description) {
         try {
             const token = await AsyncStorage.getItem('token');
-
             const postData = {
                 title: title,
                 description: description,
@@ -38,7 +36,6 @@ const CreatePost = () => {
             console.error('Error creating post:', error);
         }
     }
-
 
     return (
         <>
@@ -60,7 +57,6 @@ const CreatePost = () => {
                                 style={styles.input} 
                                 onChangeText={handleChange('title')} 
                                 onBlur={handleBlur('title')}
-                                value={values.title}
                             ></TextInput>
 
                             <Text style={styles.label}>Texto</Text>
@@ -71,7 +67,6 @@ const CreatePost = () => {
                                 style={{ height: 150, borderColor: 'gray', borderWidth: 1, borderRadius: 25, padding: 10, width: '80%' }}
                                 onChangeText={handleChange('description')}
                                 onBlur={handleBlur('description')}
-                                value={values.description}
                             />
 
                             <Button title="Salvar" style={styles.button} onPress={handleSubmit}>
