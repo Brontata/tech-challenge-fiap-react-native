@@ -24,7 +24,7 @@
 2. **Clonando o repositório**:
    ```bash
    git clone https://github.com/Brontata/tech-challenge-fiap-react-native.git
-   cd tech-challenge-mobile
+   cd tech-challenge-fiap-react-native
 
 3. **Instalando dependências**:
     ```bash
