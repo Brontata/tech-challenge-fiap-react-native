@@ -18,6 +18,8 @@
    - Node.js (recomendado: versão 18 ou superior)
    - Expo CLI instalado globalmente (`npm install -g expo-cli`)
    - Emulador Android/iOS ou dispositivo físico com o aplicativo Expo Go.
+   - API do backend para funcionamento correto pode ser encontrada [aqui](https://github.com/Brontata/tech-challenge-fiap).
+   - Caso queira consumir a API diretamente do nosso ambiente produtivo, pode utilizar a seguinte URI: https://tech-challenge-node-latest.onrender.com
 
 2. **Clonando o repositório**:
    ```bash
@@ -28,9 +30,12 @@
     ```bash
     npm install
 
-3. **Executando a aplicação:**:
+4. **Configurando API**:
+   Acesse o arquivo ```api/api.js``` e altere o valor da const ```baseURL```, substituindo o valor da URL pelo endereço da sua API, caso deseje consumir diretamente do ambiente produtivo, utilize a URL https://tech-challenge-node-latest.onrender.com
+   
+5. **Executando a aplicação:**:
     ```bash
-    npm start```
+    npm run start
 
  - Escaneie o QR Code gerado no terminal com o aplicativo Expo Go ou utilize o emulador configurado.
 
