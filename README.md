@@ -21,7 +21,7 @@
 
 2. **Clonando o repositório**:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone https://github.com/Brontata/tech-challenge-fiap-react-native.git
    cd tech-challenge-mobile
 
 3. **Instalando dependências**:
@@ -45,6 +45,7 @@ A aplicação segue a estrutura modular para facilitar o desenvolvimento e a man
     - pages: Telas principais da aplicação.
     - services: Camada de serviços para lógica de negócios e integração com APIs.
     - assets: Recursos estáticos como imagens e ícones.
+    - hooks : recurso de autenticação e autorização de usuarios implementado através de JWT Token e Context API.
 
 A navegação é gerenciada utilizando o React Navigation, implementando stacks e abas para transição entre telas.
 
