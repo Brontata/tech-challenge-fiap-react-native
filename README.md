@@ -45,7 +45,9 @@ A aplicação segue a estrutura modular para facilitar o desenvolvimento e a man
     - pages: Telas principais da aplicação.
     - services: Camada de serviços para lógica de negócios e integração com APIs.
     - assets: Recursos estáticos como imagens e ícones.
-    - hooks : recurso de autenticação e autorização de usuarios implementado através de JWT Token e Context API.
+    - utils: Funções auxiliares
+    - context: Arquivos relacionados ao Context API, fornece uma maneira eficiente de compartilhar estados, funções ou outros valores entre componentes 
+    - hooks: Usada para organizar custom hooks (ganchos personalizados) criados para encapsular lógica reutilizável
 
 A navegação é gerenciada utilizando o React Navigation, implementando stacks e abas para transição entre telas.
 
