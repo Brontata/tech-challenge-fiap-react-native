@@ -17,8 +17,10 @@ const Header = () => {
       }
     };
 
-    fetchUserName();
-  }, []); 
+    if (isLogged) {
+      fetchUserName();
+    }
+  }, [isLogged]); 
 
   const handleLogout = async () => {
     await logout();
