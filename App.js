@@ -26,6 +26,18 @@ const TabsNavigator = () => {
 
   return (
     <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) =>
+            focused ? (
+              <Ionicons name="home" size={size} color={color} />
+            ) : (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+        }}
+      />
       {!isLogged && (
         <Tab.Screen
           name="Login"
@@ -40,19 +52,6 @@ const TabsNavigator = () => {
           }}
         />
       )}
-
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ focused, color, size }) =>
-            focused ? (
-              <Ionicons name="home" size={size} color={color} />
-            ) : (
-              <Ionicons name="home-outline" size={size} color={color} />
-            ),
-        }}
-      />
 
       {isLogged && role === "PROFESSOR" && (
         <Tab.Screen
